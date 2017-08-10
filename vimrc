@@ -7,31 +7,27 @@
 " This must be set first, because it changes other options as a side effect
 set nocompatible
 
-" change the mapleader from \ to ,
-let mapleader=","
-
 """ General
-filetype plugin indent on	     " filetype detection on
+filetype plugin indent on      " filetype detection on
 
 syntax enable                  " enable syntax highlighting
 syntax on                      " enable syntax highlighting (legacy)
 
 set number                     " show line numbers
-set ruler                      " show line and column number
+set nowrap                     " turn line wrapping off
 set showmatch                  " show matching brackets, parens, etc.
-set backspace=indent,eol,start " allow backspacing over everything in insert
-set nowrap                     " don't wrap lines
 set hidden                     " buffers can exist in the background
+set backspace=indent,eol,start " allow backspacing over everything in insert
 
 """ Indentation
 set autoindent                 " copy indent level from previous line
 set smartindent                " smart auto-indenting on new line
-set shiftround                 " indent/outdent to nearest tabstop
-set shiftwidth=2               " use 2 spaces for autoindent
+
 set tabstop=2                  " use 2 spaces for tabs
-set softtabstop=2              " unify
 set expandtab                  " make tabs into spaces
-set smarttab                   " smarter tab levels
+set shiftwidth=2               " use 2 spaces for autoindent
+set shiftround                 " indent/outdent to nearest tabstop
+set softtabstop=2              " unify
 
 """ Backup & Swap
 set noswapfile                 " turn swapfile off
@@ -45,7 +41,35 @@ set ignorecase                 " ignore case in search
 set smartcase                  " only ignore case if all lowercase
 set hlsearch                   " highlight matches
 
-"" Status Line Functions
+""" Mappings
+let mapleader=","
+let maplocalleader="\\"
+
+" Quickly return to normal more
+:inoremap jk <esc>
+
+" Quickly edit and reload .vimrc file
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Wrap words in quotes
+:nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+:nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
+:vnoremap <leader>" <esc>v`<<esc>i"<esc>v`><esc>a"<esc>
+:vnoremap <leader>' <esc>v`<<esc>i'<esc>v`><esc>a"<esc>
+
+" Uppercase a word
+inoremap <c-u> <esc>bvwUi
+nnoremap <c-u> bvwU
+
+""" Abbreviations
+iabbrev @@ robin.myers87@gmail.com
+
+""" Status Line
+set laststatus=2               " Always display status line
+set noshowmode                 " Don't (repeat) display mode under statusline
+
+" Returns mode text
 function! Mode()
   redraw
   let l:mode = mode()
@@ -59,8 +83,7 @@ function! Mode()
   endif
 endfunc
 
-""" Statusline
-set laststatus=2
+" Build statusline
 set statusline=
 set statusline+=\ %{Mode()}
 set statusline+=\ %<%F
@@ -68,7 +91,7 @@ set statusline+=%=
 set statusline+=%{&filetype}\ 
 set statusline+=\|\ %{&fileformat}\ 
 set statusline+=\|\ %{&fileencoding?&fileencoding:&encoding}\ 
-set statusline+=\|\ LN\ l/L\ 
-set statusline+=\|\ (%p%%)\ 
+set statusline+=\|\ LN\ %3l/%-3L\ 
+set statusline+=\|\ (%3p%%)\ 
 set statusline+=\|\ COL\ %-3.c
 
