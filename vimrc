@@ -8,6 +8,8 @@
 set nocompatible
 
 """ General
+colorscheme rsmyers
+
 filetype plugin indent on      " filetype detection on
 
 syntax enable                  " enable syntax highlighting
